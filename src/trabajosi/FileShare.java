@@ -48,6 +48,13 @@ public class FileShare {
 
     }
 
+    /**
+     *Metodo que convierte la llave publica en formato String
+     * @param key
+     * @throws java.security.NoSuchAlgorithmException
+     * @throws java.security.spec.InvalidKeySpecException
+     */
+
     public void setPrivateKeyString(String key) throws NoSuchAlgorithmException, InvalidKeySpecException {
         byte[] encodedPrivateKey = stringToBytes(key);
 
@@ -56,6 +63,14 @@ public class FileShare {
         PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
         this.PrivateKey = privateKey;
     }
+    
+    /**
+     * Method
+     * 
+     * @param key
+     * @throws java.security.NoSuchAlgorithmException
+     * @throws java.security.spec.InvalidKeySpecException
+     */
 
     public void setPublicKeyString(String key) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
@@ -66,17 +81,38 @@ public class FileShare {
         PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
         this.PublicKey = publicKey;
     }
+    
+    /**
+     * Method
+     * 
+     * @return 
+     */
 
     public String getPrivateKeyString() {
         PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(this.PrivateKey.getEncoded());
         return bytesToString(pkcs8EncodedKeySpec.getEncoded());
     }
 
+    /**
+     * Method
+     * 
+     * @return 
+     */
     public String getPublicKeyString() {
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(this.PublicKey.getEncoded());
         return bytesToString(x509EncodedKeySpec.getEncoded());
     }
 
+    /**
+     * Method
+     * 
+     * @param size
+     * @throws java.security.NoSuchAlgorithmException
+     * @throws javax.crypto.NoSuchPaddingException
+     * @throws java.security.InvalidKeyException
+     * @throws javax.crypto.IllegalBlockSizeException
+     * @throws javax.crypto.BadPaddingException
+     */
     public void crearClaves(int size) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 
         KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
@@ -89,7 +125,21 @@ public class FileShare {
         this.PrivateKey = privateKey;
         this.PublicKey = publicKey;
     }
-    
+  
+    /**
+     * Method
+     * 
+     * @param archivo
+     * @return 
+     * @throws java.security.NoSuchAlgorithmException
+     * @throws javax.crypto.NoSuchPaddingException
+     * @throws java.security.InvalidKeyException
+     * @throws javax.crypto.IllegalBlockSizeException
+     * @throws javax.crypto.BadPaddingException
+     * @throws java.security.spec.InvalidKeySpecException
+     * @throws java.io.UnsupportedEncodingException
+     * @throws java.security.NoSuchProviderException
+     */
     public String cifrarArchivo(String archivo) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, UnsupportedEncodingException, NoSuchProviderException, IOException {
 
         String plain=readFileAsString(archivo);
@@ -104,6 +154,18 @@ public class FileShare {
 
     }
 
+    /**
+     * Method
+     * 
+     * @param archivo
+     * @return 
+     * @throws java.security.NoSuchAlgorithmException
+     * @throws javax.crypto.NoSuchPaddingException
+     * @throws java.security.InvalidKeyException
+     * @throws javax.crypto.IllegalBlockSizeException
+     * @throws javax.crypto.BadPaddingException
+     * @throws java.io.IOException
+     */
     public String descifrarArchivo(String archivo) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException {
 
         String result=readFileAsString(archivo);
@@ -115,6 +177,12 @@ public class FileShare {
         return new String(decryptedBytes);
     }
 
+    /**
+     * Method
+     * 
+     * @param b
+     * @return 
+     */
     public String bytesToString(byte[] b) {
         byte[] b2 = new byte[b.length + 1];
         b2[0] = 1;
@@ -122,11 +190,23 @@ public class FileShare {
         return new BigInteger(b2).toString(36);
     }
 
+    /**
+     * Method
+     * 
+     * @param s
+     * @return 
+     */
     public byte[] stringToBytes(String s) {
         byte[] b2 = new BigInteger(s, 36).toByteArray();
         return Arrays.copyOfRange(b2, 1, b2.length);
     }
     
+    /**
+     * Method
+     * 
+     * @param path
+     * @throws java.io.IOException
+     */
     public void saveToDiskPrivateKey(String path) throws IOException {
         try {
             try (Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), "UTF-8"))) {
@@ -137,6 +217,11 @@ public class FileShare {
         }
     }
 
+    /**
+     * Method
+     * 
+     * @param path
+     */
     public void saveToDiskPublicKey(String path) {
         try {
             try (Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), "UTF-8"))) {
@@ -146,9 +231,35 @@ public class FileShare {
             // TODO: handle exception
         }
     }
+    /**
+     * Method
+     * 
+     * @param text
+     * @param ruta
+     * @throws java.io.IOException
+     */
+    public void saveCipherText(String text, String ruta) throws IOException {
+     
+            File file = new File(ruta);
+            // Si el archivo no existe es creado
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fw = new FileWriter(file);
+        try (BufferedWriter bw = new BufferedWriter(fw)) {
+            bw.write(text);
+        }
+    }
     
-    public void saveCipherText(String text) throws IOException {
-        String ruta = "C:\\Users\\Asus PC\\Documents\\Cifrado.txt";
+    /**
+     * Method
+     * 
+     * @param text
+     * @param ruta
+     * @throws java.io.IOException
+     */
+    public void saveDecipherText(String text, String ruta) throws IOException {
+     
             
             File file = new File(ruta);
             // Si el archivo no existe es creado
@@ -161,30 +272,36 @@ public class FileShare {
         }
     }
     
-    public void saveDecipherText(String text) throws IOException {
-        String ruta = "C:\\Users\\Asus PC\\Documents\\Descifrado.txt";
-            
-            File file = new File(ruta);
-            // Si el archivo no existe es creado
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            FileWriter fw = new FileWriter(file);
-        try (BufferedWriter bw = new BufferedWriter(fw)) {
-            bw.write(text);
-        }
-    }
-    
+    /**
+     * Method
+     * 
+     * @param path
+     * @throws java.io.IOException
+     * @throws java.security.NoSuchAlgorithmException
+     * @throws java.security.spec.InvalidKeySpecException
+     */
     public void openFromDiskPublicKey(String path) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         String content = this.readFileAsString(path);
         this.setPublicKeyString(content);
     }
 
+    /**
+     * Method
+     * 
+     * @param path
+     * @throws java.io.IOException
+     * @throws java.security.NoSuchAlgorithmException
+     * @throws java.security.spec.InvalidKeySpecException
+     */
     public void openFromDiskPrivateKey(String path) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         String content = this.readFileAsString(path);
         this.setPrivateKeyString(content);
     }
     
+    /**
+     * Method
+     * 
+     */
     private String readFileAsString(String filePath) throws IOException {
         StringBuilder fileData = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(

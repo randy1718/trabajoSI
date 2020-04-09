@@ -54,7 +54,7 @@ public class Cifrar extends javax.swing.JFrame {
         jInternalFrame1 = new javax.swing.JInternalFrame();
         dir_clave = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        Cifrar = new javax.swing.JButton();
         dir_archivo = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -98,12 +98,12 @@ public class Cifrar extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(255, 153, 102));
-        jButton4.setForeground(new java.awt.Color(0, 0, 0));
-        jButton4.setText("Cifrar");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        Cifrar.setBackground(new java.awt.Color(255, 153, 102));
+        Cifrar.setForeground(new java.awt.Color(0, 0, 0));
+        Cifrar.setText("Cifrar");
+        Cifrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                CifrarActionPerformed(evt);
             }
         });
 
@@ -160,7 +160,7 @@ public class Cifrar extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Cifrar, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jInternalFrame1Layout.createSequentialGroup()
                         .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,7 +192,7 @@ public class Cifrar extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(archivo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Cifrar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -212,11 +212,17 @@ public class Cifrar extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void CifrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CifrarActionPerformed
         // TODO add your handling code here:
 
         String key=dir_clave.getText();
         String file=dir_archivo.getText();
+        
+        JFileChooser ruta=new JFileChooser();
+        ruta.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        ruta.showSaveDialog(this);
+        String ubicacion=ruta.getSelectedFile().toString();
+        String directory=ubicacion+"\\Cifrado.txt";
         
         try {
             rsa.openFromDiskPublicKey(key);
@@ -228,7 +234,8 @@ public class Cifrar extends javax.swing.JFrame {
             secure = rsa.cifrarArchivo(file);
             System.out.println(secure);
             
-            rsa.saveCipherText(secure);
+            rsa.saveCipherText(secure,directory);
+            
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | InvalidKeySpecException | UnsupportedEncodingException | NoSuchProviderException ex) {
             Logger.getLogger(Cifrar.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -236,7 +243,7 @@ public class Cifrar extends javax.swing.JFrame {
         }
 
         System.out.println(key);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_CifrarActionPerformed
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
         // TODO add your handling code here:
@@ -272,12 +279,12 @@ public class Cifrar extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Cifrar;
     private javax.swing.JButton archivo;
     private javax.swing.JButton clave;
     private javax.swing.JTextField dir_archivo;
     private javax.swing.JTextField dir_clave;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JInternalFrame jInternalFrame1;

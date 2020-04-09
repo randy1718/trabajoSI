@@ -201,6 +201,12 @@ public class Descifrar extends javax.swing.JFrame {
         String key=dir_clave.getText();
         String file=dir_archivo.getText();
         
+        JFileChooser ruta=new JFileChooser();
+        ruta.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        ruta.showSaveDialog(this);
+        String ubicacion=ruta.getSelectedFile().toString();
+        String directory=ubicacion+"\\Descifrado.txt";
+        
         try {
             rsa.openFromDiskPrivateKey(key);
         } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException ex) {
@@ -211,7 +217,7 @@ public class Descifrar extends javax.swing.JFrame {
             secure = rsa.descifrarArchivo(file);
             System.out.println(secure);
             
-            rsa.saveDecipherText(secure);
+            rsa.saveDecipherText(secure,directory);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException ex) {
             Logger.getLogger(Cifrar.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
