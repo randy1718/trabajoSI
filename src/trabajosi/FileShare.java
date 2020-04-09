@@ -77,7 +77,7 @@ public class FileShare {
         return bytesToString(x509EncodedKeySpec.getEncoded());
     }
 
-    public void genKeyPair(int size) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public void crearClaves(int size) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 
         KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
         kpg.initialize(size);
@@ -90,9 +90,9 @@ public class FileShare {
         this.PublicKey = publicKey;
     }
     
-    public String Encrypt(String plain) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, UnsupportedEncodingException, NoSuchProviderException {
+    public String cifrarArchivo(String archivo) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, UnsupportedEncodingException, NoSuchProviderException, IOException {
 
-        
+        String plain=readFileAsString(archivo);
         
         byte[] encryptedBytes;
 
@@ -104,8 +104,9 @@ public class FileShare {
 
     }
 
-    public String Decrypt(String result) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public String descifrarArchivo(String archivo) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException {
 
+        String result=readFileAsString(archivo);
         byte[] decryptedBytes;
 
         Cipher cipher = Cipher.getInstance("RSA");
@@ -148,6 +149,20 @@ public class FileShare {
     
     public void saveCipherText(String text) throws IOException {
         String ruta = "C:\\Users\\Asus PC\\Documents\\Cifrado.txt";
+            
+            File file = new File(ruta);
+            // Si el archivo no existe es creado
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fw = new FileWriter(file);
+        try (BufferedWriter bw = new BufferedWriter(fw)) {
+            bw.write(text);
+        }
+    }
+    
+    public void saveDecipherText(String text) throws IOException {
+        String ruta = "C:\\Users\\Asus PC\\Documents\\Descifrado.txt";
             
             File file = new File(ruta);
             // Si el archivo no existe es creado

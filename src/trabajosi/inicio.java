@@ -5,18 +5,30 @@
  */
 package trabajosi;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.swing.JFileChooser;
+
 /**
  *
  * @author larti
  */
 public class Inicio extends javax.swing.JFrame {
 
+    private final FileShare rsa;
     /**
      * Creates new form NewJFrame
      */
     public Inicio() {
         initComponents();
          this.setLocationRelativeTo(null);
+         rsa = new FileShare();
     }
 
     /**
@@ -48,7 +60,7 @@ public class Inicio extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(153, 255, 255));
         jPanel1.setVerifyInputWhenFocusTarget(false);
 
-        jLabel3.setFont(new java.awt.Font("Tw Cen MT", 1, 36)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Tw Cen MT", 1, 70)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Cifrador PKI");
@@ -96,26 +108,26 @@ public class Inicio extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(305, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(descifrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cifrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(llaves, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
-                .addGap(310, 310, 310))
+                .addContainerGap(264, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(descifrar, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(llaves, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(cifrar, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(263, 263, 263))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(43, 43, 43)
+                .addGap(38, 38, 38)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(64, 64, 64)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addComponent(llaves, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
+                .addGap(52, 52, 52)
                 .addComponent(cifrar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
+                .addGap(55, 55, 55)
                 .addComponent(descifrar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addGap(54, 54, 54))
         );
 
         javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
@@ -151,15 +163,32 @@ public class Inicio extends javax.swing.JFrame {
 
     private void llavesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_llavesActionPerformed
         // TODO add your handling code here:
-        setVisible(false);
-        Crear_Llaves z;
-        z = new Crear_Llaves();
-        z.setVisible(true);
+        
+        JFileChooser ruta=new JFileChooser();
+        ruta.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        ruta.showSaveDialog(this);
+        String ubicacion=ruta.getSelectedFile().toString();
+        
+        try {
+              rsa.crearClaves(1024);
+          } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
+              Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+              System.out.println("error");
+          }
+          try {
+              rsa.saveToDiskPrivateKey(ubicacion+"\\rsa.pri");
+          } catch (IOException ex) {
+              Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+              System.out.println("error");
+          }
+          rsa.saveToDiskPublicKey(ubicacion+"\\rsa.pem");
+          
+          System.out.println("generado");
     }//GEN-LAST:event_llavesActionPerformed
 
     private void descifrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descifrarActionPerformed
         // TODO add your handling code here:
-        setVisible(false);
+        this.setVisible(false);
         Descifrar z;
         z = new Descifrar();
         z.setVisible(true);
@@ -167,7 +196,7 @@ public class Inicio extends javax.swing.JFrame {
 
     private void cifrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cifrarActionPerformed
         // TODO add your handling code here:
-        setVisible(false);
+        this.setVisible(false);
         Cifrar z;
         z = new Cifrar();
         z.setVisible(true);
