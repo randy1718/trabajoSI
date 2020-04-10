@@ -20,6 +20,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -228,6 +229,7 @@ public class Cifrar extends javax.swing.JFrame {
             rsa.openFromDiskPublicKey(key);
         } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException ex) {
             Logger.getLogger(Cifrar.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Hubo un error");
         }
         String secure;
         try {
@@ -235,14 +237,17 @@ public class Cifrar extends javax.swing.JFrame {
             System.out.println(secure);
             
             rsa.saveCipherText(secure,directory);
-            
+            JOptionPane.showMessageDialog(null, "Archivo Cifrado");
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | InvalidKeySpecException | UnsupportedEncodingException | NoSuchProviderException ex) {
             Logger.getLogger(Cifrar.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Hubo un error");
         } catch (IOException ex) {
             Logger.getLogger(Cifrar.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Hubo un error");
         }
 
         System.out.println(key);
+        
     }//GEN-LAST:event_CifrarActionPerformed
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked

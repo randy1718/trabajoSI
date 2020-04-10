@@ -8,12 +8,10 @@ package trabajosi;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
@@ -38,6 +36,9 @@ import javax.crypto.NoSuchPaddingException;
 /**
  *
  * @author Randy
+ * @author Alvaro de León
+ * @url https://www.alvarodeleon.net/encriptar-y-desencriptar-con-rsa-en-java/
+ * La mayoria del codigo es proveniente de este url, y nosotros le hicimos modificaciones para adecuarlo a los criterios previstos.
  */
 public class FileShare {
 
@@ -49,7 +50,8 @@ public class FileShare {
     }
 
     /**
-     *Metodo que convierte la llave publica en formato String
+     *Metodo que convierte recibe la clave privada para convertirlo en formato bytes y asi mismo codificarla al formato X.509 Standard
+     * @author Alvaro de León
      * @param key
      * @throws java.security.NoSuchAlgorithmException
      * @throws java.security.spec.InvalidKeySpecException
@@ -65,8 +67,8 @@ public class FileShare {
     }
     
     /**
-     * Method
-     * 
+     * Method que convierte recibe la clave publica para convertirlo en formato bytes y asi mismo codificarla al formato X.509 Standard
+     * @author Alvaro de León
      * @param key
      * @throws java.security.NoSuchAlgorithmException
      * @throws java.security.spec.InvalidKeySpecException
@@ -83,8 +85,8 @@ public class FileShare {
     }
     
     /**
-     * Method
-     * 
+     * Method convierte el formato de llave privada a String
+     * @author Alvaro de León
      * @return 
      */
 
@@ -94,8 +96,8 @@ public class FileShare {
     }
 
     /**
-     * Method
-     * 
+     * Method convierte el formato de llave publica a String
+     * @author Alvaro de León
      * @return 
      */
     public String getPublicKeyString() {
@@ -104,8 +106,8 @@ public class FileShare {
     }
 
     /**
-     * Method
-     * 
+     * Method que genera tanto la llave privada como la publica teniendo el cuenta el tamaño que recibe
+     * @author Alvaro de León
      * @param size
      * @throws java.security.NoSuchAlgorithmException
      * @throws javax.crypto.NoSuchPaddingException
@@ -127,10 +129,10 @@ public class FileShare {
     }
   
     /**
-     * Method
+     * Method que recibe la ruta del archivo que despues lee para convertirlo en string y asi cifrarlo con la llave publica
      * 
      * @param archivo
-     * @return 
+     * @return el cifrado
      * @throws java.security.NoSuchAlgorithmException
      * @throws javax.crypto.NoSuchPaddingException
      * @throws java.security.InvalidKeyException
@@ -155,10 +157,10 @@ public class FileShare {
     }
 
     /**
-     * Method
+     * Method que descifra el archivo cifrado con la llave publica usnado la llave privada
      * 
      * @param archivo
-     * @return 
+     * @return el texto descifrado
      * @throws java.security.NoSuchAlgorithmException
      * @throws javax.crypto.NoSuchPaddingException
      * @throws java.security.InvalidKeyException
@@ -178,8 +180,8 @@ public class FileShare {
     }
 
     /**
-     * Method
-     * 
+     * Method de conversion de bytes a String
+     * @author Alvaro de León
      * @param b
      * @return 
      */
@@ -191,8 +193,8 @@ public class FileShare {
     }
 
     /**
-     * Method
-     * 
+     * Method de conversion de String a bytes
+     * @author Alvaro de León
      * @param s
      * @return 
      */
@@ -202,8 +204,8 @@ public class FileShare {
     }
     
     /**
-     * Method
-     * 
+     * Method que guarda la clave privada generadas en el computador
+     * @author Alvaro de León
      * @param path
      * @throws java.io.IOException
      */
@@ -218,8 +220,8 @@ public class FileShare {
     }
 
     /**
-     * Method
-     * 
+     * Method que guarda la clave publica generadas en el computador
+     * @author Alvaro de León
      * @param path
      */
     public void saveToDiskPublicKey(String path) {
@@ -232,7 +234,7 @@ public class FileShare {
         }
     }
     /**
-     * Method
+     * Method que guarda el archivo cifrado con la clave publica en el disco
      * 
      * @param text
      * @param ruta
@@ -251,8 +253,8 @@ public class FileShare {
         }
     }
     
-    /**
-     * Method
+    /** 
+     * Method que guarda el archivo descifrado con la clave privada en el disco
      * 
      * @param text
      * @param ruta
@@ -273,8 +275,8 @@ public class FileShare {
     }
     
     /**
-     * Method
-     * 
+     * Method que busca la clave publica en el disco para ser usada
+     * @author Alvaro de León
      * @param path
      * @throws java.io.IOException
      * @throws java.security.NoSuchAlgorithmException
@@ -286,8 +288,8 @@ public class FileShare {
     }
 
     /**
-     * Method
-     * 
+     * Method que busca la clave privada en el disco para ser usada
+     * @author Alvaro de León
      * @param path
      * @throws java.io.IOException
      * @throws java.security.NoSuchAlgorithmException
@@ -299,8 +301,8 @@ public class FileShare {
     }
     
     /**
-     * Method
-     * 
+     * Method que lee los archivos para convertirlos en String
+     * @author Alvaro de León
      */
     private String readFileAsString(String filePath) throws IOException {
         StringBuilder fileData = new StringBuilder();

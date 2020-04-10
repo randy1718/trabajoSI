@@ -14,6 +14,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -171,19 +172,24 @@ public class Inicio extends javax.swing.JFrame {
         
         try {
               rsa.crearClaves(1024);
+               JOptionPane.showMessageDialog(null, "Claves generadas");
           } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
               Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
               System.out.println("error");
+              JOptionPane.showMessageDialog(null, "Hubo un error");
           }
           try {
-              rsa.saveToDiskPrivateKey(ubicacion+"\\rsa.pri");
+              rsa.saveToDiskPrivateKey(ubicacion+"\\ClavePrivada.pri");
+              
           } catch (IOException ex) {
               Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
               System.out.println("error");
+              JOptionPane.showMessageDialog(null, "Hubo un error");
           }
-          rsa.saveToDiskPublicKey(ubicacion+"\\rsa.pem");
+          rsa.saveToDiskPublicKey(ubicacion+"\\ClavePublica.pem");
           
           System.out.println("generado");
+         
     }//GEN-LAST:event_llavesActionPerformed
 
     private void descifrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descifrarActionPerformed
